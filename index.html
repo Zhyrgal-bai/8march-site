@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>С 8 Марта 🌸</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, sans-serif;
+}
+
+body{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+overflow-x:hidden;
+
+background:linear-gradient(270deg,#ff9a9e,#fad0c4,#fbc2eb,#a6c1ee,#84fab0);
+background-size:800% 800%;
+animation:bgMove 15s ease infinite;
+padding:15px;
+}
+
+@keyframes bgMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+.card{
+width:100%;
+max-width:500px;
+
+background:rgba(0,0,0,0.35);
+backdrop-filter:blur(12px);
+
+padding:25px;
+border-radius:20px;
+
+color:white;
+text-align:center;
+
+box-shadow:0 0 30px rgba(0,0,0,0.4);
+}
+
+h1{
+font-size:28px;
+margin-bottom:15px;
+}
+
+#message{
+font-size:18px;
+line-height:1.5;
+min-height:110px;
+white-space:pre-line;
+margin-bottom:10px;
+}
+
+#flowerCounter{
+font-size:16px;
+margin-bottom:15px;
+opacity:.9;
+}
+
+button{
+width:100%;
+padding:14px;
+
+border:none;
+border-radius:12px;
+
+font-size:17px;
+font-weight:bold;
+
+background:white;
+cursor:pointer;
+
+margin-top:12px;
+
+transition:0.25s;
+}
+
+button:active{
+transform:scale(0.96);
+}
+
+input,
+textarea{
+
+width:100%;
+
+padding:12px;
+
+margin-top:10px;
+
+border:none;
+border-radius:10px;
+
+font-size:16px;
+}
+
+textarea{
+resize:none;
+min-height:80px;
+}
+
+#commentsList{
+margin-top:15px;
+text-align:left;
+}
+
+#commentsList div{
+background:rgba(255,255,255,0.18);
+
+padding:10px;
+border-radius:10px;
+
+margin-top:8px;
+
+font-size:15px;
+}
+
+.flower{
+position:absolute;
+top:-40px;
+font-size:22px;
+animation:fall linear forwards;
+pointer-events:none;
+}
+
+@keyframes fall{
+to{
+transform:translateY(110vh) rotate(360deg);
+}
+}
+
+.heart{
+position:absolute;
+font-size:22px;
+animation:heartFly 2s forwards;
+pointer-events:none;
+}
+
+@keyframes heartFly{
+0%{
+opacity:1;
+transform:scale(0);
+}
+100%{
+opacity:0;
+transform:translateY(-200px) scale(1.5);
+}
+}
+
+.confetti{
+position:absolute;
+top:-10px;
+width:8px;
+height:8px;
+animation:confettiFall linear forwards;
+}
+
+@keyframes confettiFall{
+to{
+transform:translateY(110vh) rotate(720deg);
+}
+
+}
+
+.particle{
+position:absolute;
+width:2px;
+height:2px;
+background:white;
+opacity:.6;
+animation:particleMove linear infinite;
+}
+
+@keyframes particleMove{
+from{
+transform:translateY(0);
+}
+to{
+transform:translateY(-100vh);
+}
+}
+
+#thanksScreen{
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+background:rgba(0,0,0,0.92);
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+text-align:center;
+
+font-size:30px;
+color:white;
+
+padding:20px;
+
+z-index:999;
+
+opacity:0;
+pointer-events:none;
+
+transition:0.35s;
+}
+
+#thanksScreen.show{
+opacity:1;
+pointer-events:auto;
+}
+
+/* мобильная адаптация */
+
+@media (max-width:500px){
+
+.card{
+padding:20px;
+}
+
+h1{
+font-size:24px;
+}
+
+#message{
+font-size:16px;
+}
+
+button{
+font-size:16px;
+padding:13px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h1>🌸 С 8 Марта 🌸</h1>
+
+<div id="message"></div>
+
+<div id="flowerCounter">Вы собрали 0 цветов 🌸</div>
+
+<button onclick="startParty()">🎉 Начать праздник</button>
+
+<h3 style="margin-top:25px">💌 Оставьте поздравление</h3>
+
+<input id="nameInput" placeholder="Ваше имя"
+style="width:100%;padding:10px;margin-top:10px;border-radius:8px;border:none">
+
+<textarea id="commentInput" placeholder="Напишите ответ..."
+style="width:100%;padding:10px;margin-top:10px;border-radius:8px;border:none"></textarea>
+
+<button onclick="sendComment()">Отправить 💬</button>
+
+<div id="commentsList" style="margin-top:20px;text-align:left"></div>
+
+</div>
+
+<div id="thanksScreen">
+💐 Спасибо за поздравление! 💐
+</div>
+
+<script>
+
+const text = `🌸 С Праздником 8 Марта! 🌸
+
+Дорогие девушки,
+поздравляю вас с этим прекрасным
+весенним праздником! 💐
+
+Пусть каждый день вашей жизни
+будет наполнен теплом,
+радостью и счастливыми моментами ✨
+
+Пусть ваши улыбки сияют
+ярче весеннего солнца ☀️
+
+Пусть рядом всегда будут люди,
+которые ценят, уважают
+и искренне любят вас ❤️
+
+Желаю вдохновения,
+красоты, нежности
+и исполнения всех желаний 🌷
+
+Пусть эта весна принесёт
+вам много радости,
+цветов и прекрасных эмоций 🌸`
+
+let i = 0
+let flowersCollected = 0
+
+function typeText(){
+
+if(i < text.length){
+
+document.getElementById("message").innerHTML += text.charAt(i)
+i++
+setTimeout(typeText,35)
+
+}
+
+}
+
+typeText()
+
+function createFlower(){
+
+const flower = document.createElement("div")
+flower.className="flower"
+flower.innerHTML="🌸"
+flower.style.left=Math.random()*100+"vw"
+flower.style.animationDuration=4+Math.random()*5+"s"
+
+document.body.appendChild(flower)
+
+setTimeout(()=>{
+flower.remove()
+},9000)
+
+}
+
+setInterval(createFlower,500)
+
+function addFlower(x,y){
+
+flowersCollected++
+
+document.getElementById("flowerCounter").innerText =
+`Вы собрали ${flowersCollected} цветов 🌸`
+
+const heart=document.createElement("div")
+
+heart.className="heart"
+heart.innerHTML="🌸"
+heart.style.left=x+"px"
+heart.style.top=y+"px"
+
+document.body.appendChild(heart)
+
+setTimeout(()=>{
+heart.remove()
+},2000)
+
+}
+
+document.addEventListener("click",(e)=>{
+addFlower(e.clientX,e.clientY)
+})
+
+document.addEventListener("touchstart",(e)=>{
+addFlower(e.touches[0].clientX,e.touches[0].clientY)
+})
+
+function startParty(){
+
+for(let i=0;i<120;i++){
+
+const conf=document.createElement("div")
+
+conf.className="confetti"
+conf.style.left=Math.random()*100+"vw"
+conf.style.background=`hsl(${Math.random()*360},100%,50%)`
+conf.style.animationDuration=2+Math.random()*3+"s"
+
+document.body.appendChild(conf)
+
+setTimeout(()=>{
+conf.remove()
+},4000)
+
+}
+
+}
+
+for(let i=0;i<60;i++){
+
+const p=document.createElement("div")
+
+p.className="particle"
+p.style.left=Math.random()*100+"vw"
+p.style.bottom=Math.random()*100+"vh"
+p.style.animationDuration=6+Math.random()*8+"s"
+
+document.body.appendChild(p)
+
+}
+
+function showThanks(){
+
+const screen = document.getElementById("thanksScreen")
+
+screen.classList.add("show")
+
+for(let i=0;i<80;i++){
+createFlower()
+}
+
+startParty()
+
+setTimeout(()=>{
+screen.classList.remove("show")
+},3000)
+
+}
+
+function sendComment(){
+
+const name = document.getElementById("nameInput").value || "Аноним"
+const text = document.getElementById("commentInput").value
+
+if(text.trim()==="") return
+
+const comment = document.createElement("div")
+comment.innerHTML = "<b>"+name+"</b><br>"+text
+
+document.getElementById("commentsList").prepend(comment)
+
+const message = "🌸 Новый ответ с сайта\nИмя: " + name + "\nСообщение: " + text
+
+fetch("https://api.telegram.org/bot8621348725:AAGxsZLbXY5LucbpDghaAW8rD95Fqa4P9Ds/sendMessage",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+chat_id:7633835337,
+text:message
+})
+})
+
+document.getElementById("commentInput").value=""
+
+showThanks()
+
+}
+
+</script>
+
+</body>
+</html>
