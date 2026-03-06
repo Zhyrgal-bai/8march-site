@@ -1,437 +1,649 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>С 8 Марта 🌸</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>С 8 Марта 🌸</title>
 
-<style>
+  <style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial, sans-serif;
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+    padding-top: 80px;
+    background: #111;
+    position: relative;
+  }
+
+  .bg-slider {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    overflow: hidden;
+  }
+
+  .bg-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transform: scale(1);
+    transition: opacity 2s ease, transform 8s ease;
+  }
+
+  .bg-slide.active {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+
+  .bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: -1;
+  }
+
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(10px);
+    color: white;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .logo {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 500px;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(12px);
+    padding: 25px;
+    border-radius: 20px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+    margin: 20px;
+    z-index: 2;
+  }
+
+  h1 {
+    font-size: 28px;
+    margin-bottom: 15px;
+  }
+
+  #message {
+    font-size: 18px;
+    line-height: 1.5;
+    min-height: 110px;
+    white-space: pre-line;
+    margin-bottom: 10px;
+  }
+
+  #extraWish {
+    margin-top: 10px;
+    font-size: 18px;
+  }
+
+  #flowerCounter {
+    font-size: 16px;
+    margin-top: 15px;
+    opacity: 0.9;
+  }
+
+  button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: bold;
+    background: white;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: 0.25s;
+  }
+
+  button:hover {
+    transform: translateY(-2px);
+  }
+
+  button:active {
+    transform: scale(0.96);
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    outline: none;
+  }
+
+  textarea {
+    resize: none;
+    min-height: 80px;
+  }
+
+  footer {
+    width: 100%;
+    max-width: 500px;
+    background: rgba(0, 0, 0, 0.55);
+    padding: 20px;
+    color: white;
+    margin: 20px;
+    border-radius: 25px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+  }
+
+  #commentsList {
+    margin-top: 15px;
+    text-align: left;
+  }
+
+  #commentsList div {
+    background: rgba(255, 255, 255, 0.18);
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 8px;
+    font-size: 15px;
+    word-wrap: break-word;
+  }
+
+  .flower {
+    position: fixed;
+    top: -50px;
+    font-size: 22px;
+    animation: fall linear forwards;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes fall {
+    0% {
+      transform: translateY(-50px) rotate(0deg);
+    }
+    100% {
+      transform: translateY(120vh) rotate(360deg);
+    }
+  }
+
+  .heart {
+    position: absolute;
+    font-size: 22px;
+    animation: heartFly 2s forwards;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  @keyframes heartFly {
+    0% {
+      opacity: 1;
+      transform: scale(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-200px) scale(1.5);
+    }
+  }
+
+  .bouquet {
+    position: absolute;
+    font-size: 35px;
+    animation: bouquetFly 2s forwards;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  @keyframes bouquetFly {
+    0% {
+      opacity: 1;
+      transform: translateY(0) scale(0.8);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-120px) scale(1.2);
+    }
+  }
+
+  .confetti {
+    position: absolute;
+    top: -10px;
+    width: 8px;
+    height: 8px;
+    animation: confettiFall linear forwards;
+    z-index: 3;
+  }
+
+  @keyframes confettiFall {
+    to {
+      transform: translateY(110vh) rotate(720deg);
+    }
+  }
+
+  .particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    opacity: 0.6;
+    animation: particleMove linear infinite;
+    z-index: 0;
+  }
+
+  @keyframes particleMove {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-100vh);
+    }
+  }
+
+  #thanksScreen {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.92);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 30px;
+    color: white;
+    padding: 20px;
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.35s;
+  }
+
+  #thanksScreen.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  #intro {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at top, rgba(255, 255, 255, 0.25), transparent 35%),
+      linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1);
+    z-index: 9999;
+    transition: opacity 1s ease, visibility 1s ease;
+  }
+
+  #intro.hide {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .intro-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+    padding: 30px 20px;
+    max-width: 600px;
+    animation: introZoom 1.4s ease;
+  }
+
+  .intro-flower {
+    font-size: 72px;
+    margin-bottom: 14px;
+    animation: floatFlower 2.5s ease-in-out infinite;
+    filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.45));
+  }
+
+  .intro-title {
+    font-size: 46px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    animation: glowText 2s ease-in-out infinite alternate;
+  }
+
+  .intro-subtitle {
+    font-size: 20px;
+    opacity: 0.95;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  .intro-button {
+    width: auto;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 999px;
+    background: white;
+    color: #d14d72;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .intro-button:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+  }
+
+  .intro-petal {
+    position: absolute;
+    top: -40px;
+    font-size: 20px;
+    opacity: 0.9;
+    animation: petalFall linear forwards;
+    pointer-events: none;
+  }
+
+  @keyframes petalFall {
+    0% {
+      transform: translateY(-40px) translateX(0) rotate(0deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(110vh) translateX(60px) rotate(360deg);
+      opacity: 0.85;
+    }
+  }
+
+  @keyframes introZoom {
+    from {
+      opacity: 0;
+      transform: scale(0.85) translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  @keyframes floatFlower {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes glowText {
+    from {
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.25), 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+    to {
+      text-shadow: 0 0 22px rgba(255, 255, 255, 0.55), 0 4px 24px rgba(0, 0, 0, 0.28);
+    }
+  }
+
+  .author {
+    margin-top: 18px;
+    font-size: 14px;
+    text-align: center;
+    opacity: 0.9;
+  }
+
+  .author a {
+    color: #ff9ecf;
+    text-decoration: none;
+  }
+
+  .author a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 500px) {
+    .card,
+    footer {
+      margin: 15px;
+      width: calc(100% - 30px);
+    }
+
+    .card {
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 24px;
+    }
+
+    #message {
+      font-size: 16px;
+    }
+
+    button {
+      font-size: 16px;
+      padding: 13px;
+    }
+
+    header {
+      padding: 0 14px;
+    }
+
+    .logo {
+      font-size: 16px;
+    }
+
+    .intro-title {
+      font-size: 34px;
+    }
+
+    .intro-subtitle {
+      font-size: 17px;
+    }
+
+    .intro-flower {
+      font-size: 58px;
+    }
+
+    .intro-button {
+      padding: 13px 22px;
+      font-size: 16px;
+    }
+  }
+
+#secretButton {
+  background: linear-gradient(135deg, #ffccd5, #ffd6f6);
+  color: #8a2d52;
 }
 
-body{
-min-height:150vh;
-display:flex;
-flex-direction:column;
-align-items:center;
-overflow-x:hidden;
-
-padding-top:80px;
+#secretButton:hover {
+  transform: translateY(-2px) scale(1.02);
 }
 
-
-
-@keyframes bgMove{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
+#videoModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  z-index: 10000;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.35s ease;
 }
 
-.card{
-width:100%;
-max-width:500px;
-
-background:rgba(0,0,0,0.35);
-backdrop-filter:blur(12px);
-
-padding:25px;
-border-radius:20px;
-
-color:white;
-text-align:center;
-
-box-shadow:0 0 30px rgba(0,0,0,0.4);
+#videoModal.show {
+  opacity: 1;
+  pointer-events: auto;
 }
 
-h1{
-font-size:28px;
-margin-bottom:15px;
+.video-box {
+  width: 100%;
+  max-width: 700px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+  border-radius: 24px;
+  padding: 20px;
+  text-align: center;
+  color: white;
+  position: relative;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
+  animation: videoPop 0.35s ease;
 }
 
-#message{
-font-size:18px;
-line-height:1.5;
-min-height:110px;
-white-space:pre-line;
-margin-bottom:10px;
+.video-box h2 {
+  margin-bottom: 10px;
+  font-size: 28px;
 }
 
-#flowerCounter{
-font-size:16px;
-margin-bottom:15px;
-opacity:.9;
+.video-box p {
+  margin-bottom: 14px;
+  font-size: 17px;
+  opacity: 0.95;
 }
 
-button{
-width:100%;
-padding:14px;
-
-border:none;
-border-radius:12px;
-
-font-size:17px;
-font-weight:bold;
-
-background:white;
-cursor:pointer;
-
-margin-top:12px;
-
-transition:0.25s;
+.video-box video {
+  width: 100%;
+  border-radius: 18px;
+  display: block;
+  background: black;
+  max-height: 70vh;
 }
 
-button:active{
-transform:scale(0.96);
+.close-video {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: white;
+  color: #c24b78;
+  font-size: 18px;
+  cursor: pointer;
+  margin-top: 0;
+  padding: 0;
 }
 
-input,
-textarea{
-
-width:100%;
-
-padding:12px;
-
-margin-top:10px;
-
-border:none;
-border-radius:10px;
-
-font-size:16px;
+@keyframes videoPop {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
-textarea{
-resize:none;
-min-height:80px;
+@media (max-width: 500px) {
+  .video-box {
+    padding: 16px;
+  }
+
+  .video-box h2 {
+    font-size: 22px;
+  }
+
+  .video-box p {
+    font-size: 15px;
+  }
 }
 
-#commentsList{
-margin-top:15px;
-text-align:left;
-}
-
-#commentsList div{
-background:rgba(255,255,255,0.18);
-
-padding:10px;
-border-radius:10px;
-
-margin-top:8px;
-
-font-size:15px;
-}
-
-.flower{
-position:fixed;
-top:-50px;
-font-size:22px;
-animation:fall linear forwards;
-pointer-events:none;
-z-index:1;
-}
-
-@keyframes fall{
-0%{
-transform:translateY(-50px) rotate(0deg);
-}
-100%{
-transform:translateY(120vh) rotate(360deg);
-}
-}
-
-
-.heart{
-position:absolute;
-font-size:22px;
-animation:heartFly 2s forwards;
-pointer-events:none;
-}
-
-@keyframes heartFly{
-0%{
-opacity:1;
-transform:scale(0);
-}
-100%{
-opacity:0;
-transform:translateY(-200px) scale(1.5);
-}
-}
-
-.confetti{
-position:absolute;
-top:-10px;
-width:8px;
-height:8px;
-animation:confettiFall linear forwards;
-}
-
-@keyframes confettiFall{
-to{
-transform:translateY(110vh) rotate(720deg);
-}
-
-}
-
-.particle{
-position:absolute;
-width:2px;
-height:2px;
-background:white;
-opacity:.6;
-animation:particleMove linear infinite;
-}
-
-@keyframes particleMove{
-from{
-transform:translateY(0);
-}
-to{
-transform:translateY(-100vh);
-}
-}
-
-#thanksScreen{
-position:fixed;
-
-top:0;
-left:0;
-
-width:100%;
-height:100%;
-
-background:rgba(0,0,0,0.92);
-
-display:flex;
-justify-content:center;
-align-items:center;
-
-text-align:center;
-
-font-size:30px;
-color:white;
-
-padding:20px;
-
-z-index:999;
-
-opacity:0;
-pointer-events:none;
-
-transition:0.35s;
-}
-
-#thanksScreen.show{
-opacity:1;
-pointer-events:auto;
-}
-
-/* мобильная адаптация */
-
-@media (max-width:500px){
-
-.card{
-padding:20px;
-}
-
-h1{
-font-size:24px;
-}
-
-#message{
-font-size:16px;
-}
-
-button{
-font-size:16px;
-padding:13px;
-}
-
-}
-
-.bg-slider{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-z-index:-2;
-overflow:hidden;
-}
-
-.bg-slide{
-position:absolute;
-width:100%;
-height:100%;
-background-size:cover;
-background-position:center;
-
-opacity:0;
-transition:opacity 2s ease, transform 8s ease;
-
-transform:scale(1);
-}
-
-.bg-slide.active{
-opacity:1;
-transform:scale(1.1);
-}
-
-.bg-overlay{
-position:absolute;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.35);
-z-index:-1;
-}
-
-#intro{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:linear-gradient(270deg,#ff9a9e,#fad0c4,#fbc2eb,#a6c1ee);
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:9999;
-transition:opacity 1s ease;
-}
-
-.intro-content{
-text-align:center;
-color:white;
-animation:introFade 2s ease;
-}
-
-.intro-flower{
-font-size:60px;
-margin-bottom:10px;
-animation:spin 3s linear infinite;
-}
-
-@keyframes spin{
-from{transform:rotate(0deg)}
-to{transform:rotate(360deg)}
-}
-
-@keyframes introFade{
-from{
-opacity:0;
-transform:scale(0.8)
-}
-to{
-opacity:1;
-transform:scale(1)
-}
-}
 
 </style>
 </head>
-
 <body>
+  <div id="intro">
+  <div class="intro-particles"></div>
 
-
-<div id="intro">
-
-<div class="intro-content">
-
-<div class="intro-flower">🌸</div>
-
-<h1>С 8 Марта</h1>
-
-<p>Небольшое поздравление для вас</p>
-
+  <div class="intro-content">
+    <div class="intro-flower">🌸</div>
+    <h1 class="intro-title">С 8 Марта</h1>
+    <p class="intro-subtitle">Нежное весеннее поздравление для вас</p>
+    <button class="intro-button" onclick="closeIntro()">Открыть поздравление ✨</button>
+  </div>
 </div>
 
-</div>
+  <div class="bg-slider">
+    <div class="bg-slide active" style="background-image: url('images/bg1.jpg');"></div>
+    <div class="bg-slide" style="background-image: url('images/bg2.jpg');"></div>
+    <div class="bg-slide" style="background-image: url('images/bg3.jpg');"></div>
+    <div class="bg-slide" style="background-image: url('images/bg4.jpg');"></div>
+    <div class="bg-overlay"></div>
+  </div>
 
-<div class="bg-slider">
+  <header>
+    <div class="logo">🌸 С 8 Марта</div>
+    <button type="button" onclick="toggleMusic()">🎵 Музыка</button>
+  </header>
 
-<div class="bg-slide active"
-style="background-image:url('images/bg1.jpg')"></div>
+  <audio id="music" loop></audio>
 
-<div class="bg-slide"
-style="background-image:url('images/bg2.jpg')"></div>
+  <main class="card">
+    <h1 id="mainTitle">🌸 С 8 Марта 🌸</h1>
+    <div id="message"></div>
+    <div id="extraWish"></div>
+    <div id="flowerCounter">Вы собрали 0 цветов 🌸</div>
+  </main>
 
-<div class="bg-slide"
-style="background-image:url('images/bg3.jpg')"></div>
+  <footer>
 
-<div class="bg-slide"
-style="background-image:url('images/bg4.jpg')"></div>
+    <h3 style="margin-bottom: 8px;">💌 Поблагодарьте Жыргала за поздравление!</h3>
 
-<div class="bg-overlay"></div>
+    <input id="nameInput" type="text" placeholder="Ваше имя" />
+    <textarea id="commentInput" placeholder="Напишите ответ..."></textarea>
 
-</div>
+    <button type="button" onclick="sendComment()">Отправить 💬</button>
 
-<header style="
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:60px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:0 20px;
-background:rgba(0,0,0,0.45);
-backdrop-filter:blur(10px);
-color:white;
-z-index:1000;
-box-shadow:0 4px 10px rgba(0,0,0,0.2);
-">
+    <button type="button" onclick="shareSite()">📤 Поделиться сайтом</button>
 
-<div style="font-size:18px;font-weight:bold;">
-🌸 С 8 Марта
-</div>
+    <button type="button" id="secretButton" onclick="showSecretVideo()">
+    🚫 Не нажимать
+    </button>
 
-<button onclick="toggleMusic()" style="
-padding:8px 16px;
-border:none;
-border-radius:10px;
-cursor:pointer;
-font-size:15px;
-background:white;
-">
-🎵 Музыка
-</button>
+    <div id="commentsList"></div>
 
-<audio id="music" loop></audio>
+    <div class="author">
+      Сайт сделал —
+      <a href="https://instagram.com/zhyrgal4_ik" target="_blank">@zhyrgal4_ik</a>
+    </div>
+  </footer>
 
-</header>
+  <div id="thanksScreen">💐 Спасибо за поздравление! 💐</div>
 
-<audio id="music" loop></audio>
-
-</header>
-
-<div class="card">
-
-<h1>
-    
-    
-    
-    🌸 С 8 Марта 🌸</h1>
-
-<div id="message"></div>
-
-<div id="extraWish" style="margin-top:10px;font-size:18px;"></div>
-
-<div id="flowerCounter">Вы собрали 0 цветов 🌸</div>
-
-
-
-
-<script>
-
-const text = `
-
-
+  <script>
+    const text = `
 🌸 С Праздником 8 Марта! 🌸
 
 Дорогие девушки,
@@ -455,340 +667,338 @@ const text = `
 
 Пусть эта весна принесёт
 вам много радости,
-цветов и прекрасных эмоций 🌸`
+цветов и прекрасных эмоций 🌸`;
 
-let i = 0
-let flowersCollected = 0
+    let i = 0;
+    let flowersCollected = 0;
 
-function typeText(){
+    const messageEl = document.getElementById("message");
+    const flowerCounterEl = document.getElementById("flowerCounter");
+    const extraWishEl = document.getElementById("extraWish");
+    const commentsListEl = document.getElementById("commentsList");
+    const musicEl = document.getElementById("music");
+    const thanksScreenEl = document.getElementById("thanksScreen");
 
-if(i < text.length){
+    function typeText() {
+      if (i < text.length) {
+        messageEl.innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeText, 35);
+      }
+    }
 
-document.getElementById("message").innerHTML += text.charAt(i)
-i++
-setTimeout(typeText,35)
+    typeText();
 
+    function createFlower() {
+      const flower = document.createElement("div");
+      flower.className = "flower";
+      flower.textContent = "🌸";
+      flower.style.left = Math.random() * 100 + "vw";
+      flower.style.animationDuration = 5 + Math.random() * 5 + "s";
+
+      document.body.appendChild(flower);
+
+      setTimeout(() => {
+        flower.remove();
+      }, 10000);
+    }
+
+    setInterval(createFlower, 500);
+
+    function addFlower(x, y) {
+      flowersCollected++;
+      flowerCounterEl.innerText = `Вы собрали ${flowersCollected} цветов 🌸`;
+
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.textContent = "🌸";
+      heart.style.left = x + "px";
+      heart.style.top = y + window.scrollY + "px";
+
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 2000);
+    }
+
+    function addBouquet(x, y) {
+      const bouquet = document.createElement("div");
+      bouquet.className = "bouquet";
+      bouquet.textContent = "💐";
+      bouquet.style.left = x + "px";
+      bouquet.style.top = y + window.scrollY + "px";
+
+      document.body.appendChild(bouquet);
+
+      setTimeout(() => {
+        bouquet.remove();
+      }, 2000);
+    }
+
+    document.addEventListener("click", (e) => {
+      addFlower(e.clientX, e.clientY);
+      addBouquet(e.clientX, e.clientY);
+    });
+
+    document.addEventListener("touchstart", (e) => {
+      const touch = e.touches[0];
+      addFlower(touch.clientX, touch.clientY);
+      addBouquet(touch.clientX, touch.clientY);
+    });
+
+    function startParty() {
+      for (let i = 0; i < 120; i++) {
+        const conf = document.createElement("div");
+        conf.className = "confetti";
+        conf.style.left = Math.random() * 100 + "vw";
+        conf.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        conf.style.animationDuration = 2 + Math.random() * 3 + "s";
+
+        document.body.appendChild(conf);
+
+        setTimeout(() => {
+          conf.remove();
+        }, 4000);
+      }
+    }
+
+    for (let i = 0; i < 60; i++) {
+      const p = document.createElement("div");
+      p.className = "particle";
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.bottom = Math.random() * 100 + "vh";
+      p.style.animationDuration = 6 + Math.random() * 8 + "s";
+
+      document.body.appendChild(p);
+    }
+
+    function showThanks() {
+      thanksScreenEl.classList.add("show");
+
+      for (let i = 0; i < 80; i++) {
+        createFlower();
+      }
+
+      startParty();
+
+      setTimeout(() => {
+        thanksScreenEl.classList.remove("show");
+      }, 3000);
+    }
+
+async function sendComment() {
+  const name = document.getElementById("nameInput").value.trim() || "Аноним";
+  const commentText = document.getElementById("commentInput").value.trim();
+
+  if (commentText === "") return;
+
+  const comment = document.createElement("div");
+  comment.innerHTML = "<b>" + escapeHtml(name) + "</b><br>" + escapeHtml(commentText);
+  document.getElementById("commentsList").prepend(comment);
+
+  const message = `🌸 Новый ответ с сайта
+Имя: ${name}
+Сообщение: ${commentText}`;
+
+  const BOT_TOKEN = "8621348725:AAGxsZLbXY5LucbpDghaAW8rD95Fqa4P9Ds";
+  const CHAT_ID = "7633835337";
+
+  try {
+    const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        chat_id: CHAT_ID,
+        text: message
+      })
+    });
+
+    const result = await response.json();
+    console.log(result);
+  } catch (error) {
+    console.error("Ошибка отправки в Telegram:", error);
+  }
+
+  document.getElementById("nameInput").value = "";
+  document.getElementById("commentInput").value = "";
+  showThanks();
 }
 
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    const wishes = [
+      "Пусть каждый день будет счастливым 🌷",
+      "Пусть улыбка никогда не исчезает 💐",
+      "Пусть весна принесёт радость 🌸",
+      "Пусть мечты исполняются ✨",
+      "Пусть в жизни будет много любви ❤️"
+    ];
+
+    const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
+    extraWishEl.innerText = randomWish;
+
+    const songs = [
+      "music1.mp3",
+      "music2.mp3",
+      "music3.mp3",
+      "music4.mp3",
+      "music5.mp3",
+      "music6.mp3",
+      "music7.mp3"
+    ];
+
+    const randomSong = songs[Math.floor(Math.random() * songs.length)];
+    musicEl.src = randomSong;
+
+    function toggleMusic() {
+      if (musicEl.paused) {
+        musicEl.play().catch((error) => {
+          console.log("Браузер заблокировал автозапуск:", error);
+        });
+      } else {
+        musicEl.pause();
+      }
+    }
+
+    const slides = document.querySelectorAll(".bg-slide");
+    let currentSlide = 0;
+
+    function changeSlide() {
+      slides[currentSlide].classList.remove("active");
+      currentSlide++;
+
+      if (currentSlide >= slides.length) {
+        currentSlide = 0;
+      }
+
+      slides[currentSlide].classList.add("active");
+    }
+
+    setInterval(changeSlide, 6000);
+
+    setTimeout(() => {
+      const intro = document.getElementById("intro");
+      intro.style.opacity = "0";
+
+      setTimeout(() => {
+        intro.remove();
+      }, 1000);
+    }, 3000);
+
+    function getNameFromURL() {
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get("name");
+
+        if (name && name.trim() !== "") {
+            const safeName = escapeHtml(name.trim());
+            document.getElementById("mainTitle").innerHTML = `${safeName}, с 8 Марта 🌸`;
+        }
+        }
+
+        getNameFromURL();
+
+
+    
+    async function shareSite() {
+  const shareData = {
+    title: "С 8 Марта 🌸",
+    text: "Посмотри красивое поздравление с 8 Марта 🌸",
+    url: window.location.href
+  };
+
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData);
+    } catch (error) {
+      console.log("Поделиться не удалось:", error);
+    }
+  } else {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      alert("Ссылка скопирована!");
+    } catch (error) {
+      alert("Не удалось скопировать ссылку");
+    }
+  }
 }
 
-typeText()
+function createIntroPetal() {
+  const intro = document.getElementById("intro");
+  if (!intro || intro.classList.contains("hide")) return;
 
-function createFlower(){
+  const petal = document.createElement("div");
+  petal.className = "intro-petal";
+  petal.textContent = "🌸";
+  petal.style.left = Math.random() * 100 + "vw";
+  petal.style.animationDuration = 4 + Math.random() * 4 + "s";
+  petal.style.fontSize = 16 + Math.random() * 18 + "px";
 
-const flower = document.createElement("div")
+  intro.appendChild(petal);
 
-flower.className = "flower"
-flower.innerHTML = "🌸"
-
-flower.style.left = Math.random()*100 + "vw"
-flower.style.animationDuration = 5 + Math.random()*5 + "s"
-
-document.body.appendChild(flower)
-
-setTimeout(()=>{
-flower.remove()
-},10000)
-
+  setTimeout(() => {
+    petal.remove();
+  }, 9000);
 }
 
-setInterval(createFlower,500)
+const introPetalInterval = setInterval(createIntroPetal, 250);
 
-function addFlower(x,y){
+function closeIntro() {
+  const intro = document.getElementById("intro");
+  intro.classList.add("hide");
 
-flowersCollected++
-
-document.getElementById("flowerCounter").innerText =
-`Вы собрали ${flowersCollected} цветов 🌸`
-
-const heart = document.createElement("div")
-
-heart.className = "heart"
-heart.innerHTML = "🌸"
-
-heart.style.position = "absolute"
-heart.style.left = x + "px"
-heart.style.top = (y + window.scrollY) + "px"
-
-heart.style.pointerEvents = "none"
-
-document.body.appendChild(heart)
-
-setTimeout(()=>{
-heart.remove()
-},2000)
-
+  setTimeout(() => {
+    intro.remove();
+    clearInterval(introPetalInterval);
+  }, 1000);
 }
 
-document.addEventListener("click",(e)=>{
-addFlower(e.clientX,e.clientY)
-})
+function showSecretVideo() {
+  const modal = document.getElementById("videoModal");
+  const video = document.getElementById("secretVideo");
 
-document.addEventListener("touchstart",(e)=>{
-addFlower(e.touches[0].clientX,e.touches[0].clientY)
-})
+  modal.classList.add("show");
 
-function startParty(){
-
-for(let i=0;i<120;i++){
-
-const conf=document.createElement("div")
-
-conf.className="confetti"
-conf.style.left=Math.random()*100+"vw"
-conf.style.background=`hsl(${Math.random()*360},100%,50%)`
-conf.style.animationDuration=2+Math.random()*3+"s"
-
-document.body.appendChild(conf)
-
-setTimeout(()=>{
-conf.remove()
-},4000)
-
+  if (video) {
+    video.currentTime = 0;
+    video.play().catch(() => {});
+  }
 }
 
+function closeSecretVideo() {
+  const modal = document.getElementById("videoModal");
+  const video = document.getElementById("secretVideo");
+
+  modal.classList.remove("show");
+
+  if (video) {
+    video.pause();
+    video.currentTime = 0;
+  }
 }
 
-for(let i=0;i<60;i++){
-
-const p=document.createElement("div")
-
-p.className="particle"
-p.style.left=Math.random()*100+"vw"
-p.style.bottom=Math.random()*100+"vh"
-p.style.animationDuration=6+Math.random()*8+"s"
-
-document.body.appendChild(p)
-
-}
-
-function showThanks(){
-
-const screen = document.getElementById("thanksScreen")
-
-screen.classList.add("show")
-
-for(let i=0;i<80;i++){
-createFlower()
-}
-
-startParty()
-
-setTimeout(()=>{
-screen.classList.remove("show")
-},3000)
-
-}
-
-function sendComment(){
-
-const name = document.getElementById("nameInput").value || "Аноним"
-const text = document.getElementById("commentInput").value
-
-if(text.trim()==="") return
-
-const comment = document.createElement("div")
-comment.innerHTML = "<b>"+name+"</b><br>"+text
-
-document.getElementById("commentsList").prepend(comment)
-
-const message = "🌸 Новый ответ с сайта\nИмя: " + name + "\nСообщение: " + text
-
-fetch("https://api.telegram.org/bot8621348725:AAGxsZLbXY5LucbpDghaAW8rD95Fqa4P9Ds/sendMessage",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-chat_id:7633835337,
-text:message
-})
-})
-
-document.getElementById("commentInput").value=""
-
-showThanks()
-
-}
-
-const wishes = [
-"Пусть каждый день будет счастливым 🌷",
-"Пусть улыбка никогда не исчезает 💐",
-"Пусть весна принесёт радость 🌸",
-"Пусть мечты исполняются ✨",
-"Пусть в жизни будет много любви ❤️"
-]
-
-const randomWish = wishes[Math.floor(Math.random()*wishes.length)]
-
-document.getElementById("extraWish").innerText = randomWish
-
-
-function addBouquet(x,y){
-
-const flower = document.createElement("div")
-
-flower.innerHTML = "💐"
-flower.style.position = "absolute"
-
-flower.style.left = x + "px"
-flower.style.top = (y + window.scrollY) + "px"
-
-flower.style.fontSize = "35px"
-flower.style.pointerEvents = "none"
-
-document.body.appendChild(flower)
-
-setTimeout(()=>{
-flower.remove()
-},2000)
-
-}
-
-document.addEventListener("click",(e)=>{
-addBouquet(e.clientX,e.clientY)
-})
-
-
-function playMusic(){
-document.getElementById("music").play()
-}
-
-const songs = [
-"music1.mp3",
-"music2.mp3",
-"music3.mp3",
-"music4.mp3",
-"music5.mp3",
-"music6.mp3",
-"music7.mp3"
-]
-
-const randomSong = songs[Math.floor(Math.random() * songs.length)]
-
-document.getElementById("music").src = randomSong
-
-
-function playMusic(){
-    const music = document.getElementById("music")
-    music.play()
-}
-
-function toggleMusic(){
-
-const music = document.getElementById("music")
-
-if(music.paused){
-music.play()
-}else{
-music.pause()
-}
-
-}
-
-
-const slides = document.querySelectorAll(".bg-slide")
-let currentSlide = 0
-
-function changeSlide(){
-
-slides[currentSlide].classList.remove("active")
-
-currentSlide++
-
-if(currentSlide >= slides.length){
-currentSlide = 0
-}
-
-slides[currentSlide].classList.add("active")
-
-}
-
-setInterval(changeSlide,6000)
-
-
-setTimeout(()=>{
-
-document.getElementById("intro").style.opacity="0"
-
-setTimeout(()=>{
-document.getElementById("intro").remove()
-},1000)
-
-},3000)
-
-</script>
-
-
-
-<footer style="
-width:100%;
-max-width:500px;
-background:rgba(0,0,0,0.55);
-padding:20px;
-color:white;
-margin-top:600px;
-border-radius:25px;
-box-shadow:0 0 20px rgba(0,0,0,0.3);
-">
-
-<button onclick="toggleMusic()" style="
-width:100%;
-padding:12px;
-border:none;
-border-radius:12px;
-margin-bottom:15px;
-font-size:16px;
-cursor:pointer;
-">
-🎵 Музыка
-</button>
-
-<audio id="music" loop></audio>
-
-<h3 style="margin-bottom:8px">💌 Оставьте поздравление</h3>
-
-<input id="nameInput" placeholder="Ваше имя"
-style="width:100%;padding:10px;margin-top:8px;border-radius:10px;border:none">
-
-<textarea id="commentInput" placeholder="Напишите ответ..."
-style="width:100%;padding:10px;margin-top:8px;border-radius:10px;border:none"></textarea>
-
-<button onclick="sendComment()" style="
-width:100%;
-margin-top:10px;
-padding:12px;
-border:none;
-border-radius:10px;
-font-weight:bold;
-cursor:pointer;
-">
-Отправить 💬
-</button>
-
-<div id="commentsList" style="margin-top:15px"></div>
-
-<div style="
-margin-top:18px;
-font-size:14px;
-text-align:center;
-opacity:0.9;
-">
-
-Сайт сделал —
-<a href="https://instagram.com/zhyrgal4_ik"
-target="_blank"
-style="color:#ff9ecf;text-decoration:none;">
-@zhyrgal4_ik
-</a>
-
+  </script>
+
+  <div id="videoModal">
+  <div class="video-box">
+    <button type="button" class="close-video" onclick="closeSecretVideo()">✖</button>
+    <h2>Ты все-таки нажал(а) 😄</h2>
+    <p>Ладно, вот тебе кое-что милое 💖</p>
+
+    <video id="secretVideo" controls playsinline>
+      <source src="милое-видео.mp4" type="video/mp4">
+      Ваш браузер не поддерживает видео.
+    </video>
+  </div>
 </div>
-
-</footer>
-
-<div id="thanksScreen">
-💐 Спасибо за поздравление! 💐
-</div>>
-
 </body>
 </html>
