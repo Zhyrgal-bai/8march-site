@@ -16,17 +16,20 @@ font-family:Arial, sans-serif;
 }
 
 body{
-min-height:100vh;
+min-height:150vh;
 display:flex;
-justify-content:center;
+flex-direction:column;
 align-items:center;
 overflow-x:hidden;
+
+padding-top:80px;
 
 background:linear-gradient(270deg,#ff9a9e,#fad0c4,#fbc2eb,#a6c1ee,#84fab0);
 background-size:800% 800%;
 animation:bgMove 15s ease infinite;
-padding:15px;
 }
+
+
 
 @keyframes bgMove{
 0%{background-position:0% 50%;}
@@ -255,37 +258,69 @@ padding:13px;
 
 <body>
 
+<header style="
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:60px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:0 20px;
+background:rgba(0,0,0,0.45);
+backdrop-filter:blur(10px);
+color:white;
+z-index:1000;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+">
+
+<div style="font-size:18px;font-weight:bold;">
+🌸 С 8 Марта
+</div>
+
+<button onclick="toggleMusic()" style="
+padding:8px 16px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-size:15px;
+background:white;
+">
+🎵 Музыка
+</button>
+
+<audio id="music" loop></audio>
+
+</header>
+
+<audio id="music" loop></audio>
+
+</header>
+
 <div class="card">
 
-<h1>🌸 С 8 Марта 🌸</h1>
+<h1>
+    
+    
+    
+    🌸 С 8 Марта 🌸</h1>
 
 <div id="message"></div>
 
+<div id="extraWish" style="margin-top:10px;font-size:18px;"></div>
+
 <div id="flowerCounter">Вы собрали 0 цветов 🌸</div>
 
-<button onclick="startParty()">🎉 Начать праздник</button>
 
-<h3 style="margin-top:25px">💌 Оставьте поздравление</h3>
 
-<input id="nameInput" placeholder="Ваше имя"
-style="width:100%;padding:10px;margin-top:10px;border-radius:8px;border:none">
-
-<textarea id="commentInput" placeholder="Напишите ответ..."
-style="width:100%;padding:10px;margin-top:10px;border-radius:8px;border:none"></textarea>
-
-<button onclick="sendComment()">Отправить 💬</button>
-
-<div id="commentsList" style="margin-top:20px;text-align:left"></div>
-
-</div>
-
-<div id="thanksScreen">
-💐 Спасибо за поздравление! 💐
-</div>
 
 <script>
 
-const text = `🌸 С Праздником 8 Марта! 🌸
+const text = `
+
+
+🌸 С Праздником 8 Марта! 🌸
 
 Дорогие девушки,
 поздравляю вас с этим прекрасным
@@ -458,7 +493,150 @@ showThanks()
 
 }
 
+const wishes = [
+"Пусть каждый день будет счастливым 🌷",
+"Пусть улыбка никогда не исчезает 💐",
+"Пусть весна принесёт радость 🌸",
+"Пусть мечты исполняются ✨",
+"Пусть в жизни будет много любви ❤️"
+]
+
+const randomWish = wishes[Math.floor(Math.random()*wishes.length)]
+
+document.getElementById("extraWish").innerText = randomWish
+
+
+function addBouquet(x,y){
+
+const flower = document.createElement("div")
+
+flower.innerHTML = "💐"
+flower.style.position = "absolute"
+flower.style.left = x+"px"
+flower.style.top = y+"px"
+flower.style.fontSize = "35px"
+
+document.body.appendChild(flower)
+
+setTimeout(()=>{
+flower.remove()
+},2000)
+
+}
+
+document.addEventListener("click",(e)=>{
+addBouquet(e.clientX,e.clientY)
+})
+
+
+function playMusic(){
+document.getElementById("music").play()
+}
+
+const songs = [
+"music1.mp3",
+"music2.mp3",
+"music3.mp3",
+"music4.mp3",
+"music5.mp3",
+"music6.mp3",
+"music7.mp3"
+]
+
+const randomSong = songs[Math.floor(Math.random() * songs.length)]
+
+document.getElementById("music").src = randomSong
+
+
+function playMusic(){
+    const music = document.getElementById("music")
+    music.play()
+}
+
+function toggleMusic(){
+
+const music = document.getElementById("music")
+
+if(music.paused){
+music.play()
+}else{
+music.pause()
+}
+
+}
+
 </script>
+
+
+
+<footer style="
+width:100%;
+max-width:500px;
+background:rgba(0,0,0,0.55);
+padding:20px;
+color:white;
+margin-top:600px;
+border-radius:25px;
+box-shadow:0 0 20px rgba(0,0,0,0.3);
+">
+
+<button onclick="toggleMusic()" style="
+width:100%;
+padding:12px;
+border:none;
+border-radius:12px;
+margin-bottom:15px;
+font-size:16px;
+cursor:pointer;
+">
+🎵 Музыка
+</button>
+
+<audio id="music" loop></audio>
+
+<h3 style="margin-bottom:8px">💌 Оставьте поздравление</h3>
+
+<input id="nameInput" placeholder="Ваше имя"
+style="width:100%;padding:10px;margin-top:8px;border-radius:10px;border:none">
+
+<textarea id="commentInput" placeholder="Напишите ответ..."
+style="width:100%;padding:10px;margin-top:8px;border-radius:10px;border:none"></textarea>
+
+<button onclick="sendComment()" style="
+width:100%;
+margin-top:10px;
+padding:12px;
+border:none;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+">
+Отправить 💬
+</button>
+
+<div id="commentsList" style="margin-top:15px"></div>
+
+<div style="
+margin-top:18px;
+font-size:14px;
+text-align:center;
+opacity:0.9;
+">
+
+Сайт сделал —
+<a href="https://instagram.com/zhyrgal4_ik"
+target="_blank"
+style="color:#ff9ecf;text-decoration:none;">
+@zhyrgal4_ik
+</a>
+
+</div>
+
+</footer>
+
+<div id="thanksScreen">
+💐 Спасибо за поздравление! 💐
+</div>>
 
 </body>
 </html>
