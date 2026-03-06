@@ -23,10 +23,6 @@ align-items:center;
 overflow-x:hidden;
 
 padding-top:80px;
-
-background:linear-gradient(270deg,#ff9a9e,#fad0c4,#fbc2eb,#a6c1ee,#84fab0);
-background-size:800% 800%;
-animation:bgMove 15s ease infinite;
 }
 
 
@@ -131,18 +127,23 @@ font-size:15px;
 }
 
 .flower{
-position:absolute;
-top:-40px;
+position:fixed;
+top:-50px;
 font-size:22px;
 animation:fall linear forwards;
 pointer-events:none;
+z-index:1;
 }
 
 @keyframes fall{
-to{
-transform:translateY(110vh) rotate(360deg);
+0%{
+transform:translateY(-50px) rotate(0deg);
+}
+100%{
+transform:translateY(120vh) rotate(360deg);
 }
 }
+
 
 .heart{
 position:absolute;
@@ -253,10 +254,121 @@ padding:13px;
 
 }
 
+.bg-slider{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:-2;
+overflow:hidden;
+}
+
+.bg-slide{
+position:absolute;
+width:100%;
+height:100%;
+background-size:cover;
+background-position:center;
+
+opacity:0;
+transition:opacity 2s ease, transform 8s ease;
+
+transform:scale(1);
+}
+
+.bg-slide.active{
+opacity:1;
+transform:scale(1.1);
+}
+
+.bg-overlay{
+position:absolute;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.35);
+z-index:-1;
+}
+
+#intro{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:linear-gradient(270deg,#ff9a9e,#fad0c4,#fbc2eb,#a6c1ee);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:9999;
+transition:opacity 1s ease;
+}
+
+.intro-content{
+text-align:center;
+color:white;
+animation:introFade 2s ease;
+}
+
+.intro-flower{
+font-size:60px;
+margin-bottom:10px;
+animation:spin 3s linear infinite;
+}
+
+@keyframes spin{
+from{transform:rotate(0deg)}
+to{transform:rotate(360deg)}
+}
+
+@keyframes introFade{
+from{
+opacity:0;
+transform:scale(0.8)
+}
+to{
+opacity:1;
+transform:scale(1)
+}
+}
+
 </style>
 </head>
 
 <body>
+
+
+<div id="intro">
+
+<div class="intro-content">
+
+<div class="intro-flower">🌸</div>
+
+<h1>С 8 Марта</h1>
+
+<p>Небольшое поздравление для вас</p>
+
+</div>
+
+</div>
+
+<div class="bg-slider">
+
+<div class="bg-slide active"
+style="background-image:url('images/bg1.jpg')"></div>
+
+<div class="bg-slide"
+style="background-image:url('images/bg2.jpg')"></div>
+
+<div class="bg-slide"
+style="background-image:url('images/bg3.jpg')"></div>
+
+<div class="bg-slide"
+style="background-image:url('images/bg4.jpg')"></div>
+
+<div class="bg-overlay"></div>
+
+</div>
 
 <header style="
 position:fixed;
@@ -365,16 +477,18 @@ typeText()
 function createFlower(){
 
 const flower = document.createElement("div")
-flower.className="flower"
-flower.innerHTML="🌸"
-flower.style.left=Math.random()*100+"vw"
-flower.style.animationDuration=4+Math.random()*5+"s"
+
+flower.className = "flower"
+flower.innerHTML = "🌸"
+
+flower.style.left = Math.random()*100 + "vw"
+flower.style.animationDuration = 5 + Math.random()*5 + "s"
 
 document.body.appendChild(flower)
 
 setTimeout(()=>{
 flower.remove()
-},9000)
+},10000)
 
 }
 
@@ -387,12 +501,16 @@ flowersCollected++
 document.getElementById("flowerCounter").innerText =
 `Вы собрали ${flowersCollected} цветов 🌸`
 
-const heart=document.createElement("div")
+const heart = document.createElement("div")
 
-heart.className="heart"
-heart.innerHTML="🌸"
-heart.style.left=x+"px"
-heart.style.top=y+"px"
+heart.className = "heart"
+heart.innerHTML = "🌸"
+
+heart.style.position = "absolute"
+heart.style.left = x + "px"
+heart.style.top = (y + window.scrollY) + "px"
+
+heart.style.pointerEvents = "none"
 
 document.body.appendChild(heart)
 
@@ -512,9 +630,12 @@ const flower = document.createElement("div")
 
 flower.innerHTML = "💐"
 flower.style.position = "absolute"
-flower.style.left = x+"px"
-flower.style.top = y+"px"
+
+flower.style.left = x + "px"
+flower.style.top = (y + window.scrollY) + "px"
+
 flower.style.fontSize = "35px"
+flower.style.pointerEvents = "none"
 
 document.body.appendChild(flower)
 
@@ -564,6 +685,37 @@ music.pause()
 }
 
 }
+
+
+const slides = document.querySelectorAll(".bg-slide")
+let currentSlide = 0
+
+function changeSlide(){
+
+slides[currentSlide].classList.remove("active")
+
+currentSlide++
+
+if(currentSlide >= slides.length){
+currentSlide = 0
+}
+
+slides[currentSlide].classList.add("active")
+
+}
+
+setInterval(changeSlide,6000)
+
+
+setTimeout(()=>{
+
+document.getElementById("intro").style.opacity="0"
+
+setTimeout(()=>{
+document.getElementById("intro").remove()
+},1000)
+
+},3000)
 
 </script>
 
