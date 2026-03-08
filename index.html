@@ -1723,6 +1723,242 @@ header button {
   }
 }
 
+
+/* ===== OPTIMIZER FOR WEAK DEVICES ===== */
+
+html.weak-device * {
+  scroll-behavior: auto !important;
+}
+
+html.weak-device .card,
+html.weak-device footer,
+html.weak-device header,
+html.weak-device .video-box {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.weak-device .card,
+html.weak-device footer,
+html.weak-device header,
+html.weak-device .video-box,
+html.weak-device button,
+html.weak-device #commentsList div,
+html.weak-device #message,
+html.weak-device input,
+html.weak-device textarea {
+  box-shadow: none !important;
+}
+
+html.weak-device .flower,
+html.weak-device .heart,
+html.weak-device .bouquet,
+html.weak-device .particle,
+html.weak-device .confetti,
+html.weak-device .intro-petal {
+  filter: none !important;
+}
+
+html.weak-device body::before,
+html.weak-device body::after,
+html.weak-device .footer-glow,
+html.weak-device .bg-slide::after,
+html.weak-device #thanksScreen::before {
+  display: none !important;
+}
+
+html.weak-device .bg-slide {
+  transition: opacity 0.8s ease !important;
+  transform: none !important;
+}
+
+html.weak-device .bg-slide.active {
+  transform: none !important;
+}
+
+html.weak-device .card:hover,
+html.weak-device button:hover,
+html.weak-device #commentsList div:hover,
+html.weak-device .intro-button:hover,
+html.weak-device #secretButton:hover {
+  transform: none !important;
+}
+
+html.weak-device .particle,
+html.weak-device .intro-petal,
+html.weak-device .confetti {
+  display: none !important;
+}
+
+
+.flower {
+  will-change: transform;
+}
+
+
+/* ===== HEADER ===== */
+
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 18px;
+  backdrop-filter: blur(10px);
+}
+
+/* ===== LOGO ===== */
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.logo-title {
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.logo-subtitle {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* ===== CONTROL PANEL ===== */
+
+.control-panel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ===== MUSIC CONTROLS ===== */
+
+.music-controls {
+  display: flex;
+  gap: 6px;
+  background: rgba(255,255,255,0.08);
+  padding: 4px;
+  border-radius: 14px;
+}
+
+/* ===== BUTTONS ===== */
+
+.ctrl-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: rgba(255,255,255,0.12);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.2s;
+}
+
+.ctrl-btn:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+.play-btn {
+  width: 40px;
+  height: 36px;
+  font-size: 18px;
+}
+
+/* ===== SECRET BUTTON ===== */
+
+.ultra-btn-secret {
+  padding: 8px 14px;
+  font-size: 14px;
+  border-radius: 14px;
+}
+
+/* ===== MOBILE ===== */
+
+@media (max-width:600px){
+
+.logo-subtitle{
+  display:none;
+}
+
+.ultra-btn-secret{
+  padding:6px 10px;
+  font-size:13px;
+}
+
+.music-controls{
+  gap:4px;
+}
+
+.ctrl-btn{
+  width:32px;
+  height:32px;
+}
+
+}
+
+.footer-end {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.78);
+  opacity: 0.9;
+  letter-spacing: 0.2px;
+}
+
+.footer-end::before {
+  content: "";
+  display: block;
+  width: 70px;
+  height: 1px;
+  margin: 0 auto 12px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+}
+
+.comments-counter{
+  margin:12px auto 14px;
+  text-align:center;
+  font-size:14px;
+  font-weight:700;
+  color:rgba(255,255,255,0.85);
+
+  padding:8px 14px;
+
+  border-radius:999px;
+
+  background:linear-gradient(
+    135deg,
+    rgba(255,170,210,0.12),
+    rgba(167,139,250,0.08)
+  );
+
+  border:1px solid rgba(255,255,255,0.12);
+
+  width:fit-content;
+
+  box-shadow:
+  0 8px 18px rgba(0,0,0,0.15),
+  inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+
 </style>
 </head>
 <body>
@@ -1745,7 +1981,7 @@ header button {
     <div class="bg-overlay"></div>
   </div>
 
- <header>
+<header class="site-header">
   <div class="logo-wrap">
     <div class="logo-icon">🌸</div>
     <div class="logo-text">
@@ -1754,10 +1990,23 @@ header button {
     </div>
   </div>
 
-  <div class="header-actions">
-    <button type="button" onclick="toggleMusic()">🎵 Музыка</button>
+  <div class="control-panel">
+    <div class="music-controls">
+      <button class="ctrl-btn" id="prevBtn" title="Предыдущая">⏮</button>
+      <button class="ctrl-btn play-btn" id="playBtn" title="Play / Pause">▶️</button>
+      <button class="ctrl-btn" id="nextBtn" title="Следующая">⏭</button>
+    </div>
+
+    <button type="button"
+      class="ultra-btn ultra-btn-secret"
+      id="secretButton"
+      onclick="showSecretVideo()">
+      🚫 Не нажимать
+    </button>
   </div>
 </header>
+
+<audio id="music" loop></audio>
 
   <audio id="music" loop></audio>
 
@@ -1768,32 +2017,48 @@ header button {
     <div id="flowerCounter">Вы собрали 0 цветов 🌸</div>
   </main>
 
- <footer class="ultra-footer">
+<footer class="ultra-footer">
   <div class="footer-glow footer-glow-1"></div>
   <div class="footer-glow footer-glow-2"></div>
 
-  <div class="footer-badge">🌸 Для автора поздравления</div>
+  <div class="footer-badge">🌸</div>
 
-  <h3 class="footer-title">💌 Поблагодарьте Жыргала за поздравление!</h3>
+  <h3 class="footer-title">💌 Если хотите, оставьте ответ</h3>
+
   <p class="footer-subtitle">
-    Если вам понравился этот сайт и поздравление, можете оставить тёплые слова ниже ✨
+    Если вам понравилось это поздравление,
+    можете оставить несколько приятных слов ниже ✨
   </p>
+
+  <div class="comments-counter" id="commentsCounter">
+    💌 Уже оставили ответ: 0 человек
+  </div>
 
   <div class="footer-form">
     <div class="input-wrap">
       <span class="input-icon">👤</span>
-      <input id="nameInput" type="text" placeholder="Ваше имя" />
+      <input
+        id="nameInput"
+        type="text"
+        placeholder="Ваше имя или ник (необязательно)"
+        maxlength="30"
+        autocomplete="name"
+      />
     </div>
 
     <div class="input-wrap textarea-wrap">
       <span class="input-icon">💬</span>
-      <textarea id="commentInput" placeholder="Напишите ответ..."></textarea>
+      <textarea
+        id="commentInput"
+        placeholder="Напишите несколько приятных слов..."
+        maxlength="200"
+      ></textarea>
     </div>
   </div>
 
   <div class="footer-actions">
     <button type="button" class="ultra-btn ultra-btn-primary" onclick="sendComment()">
-      <span>Отправить 💬</span>
+      <span>💬 Отправить сообщение</span>
     </button>
 
     <button type="button" class="ultra-btn ultra-btn-secondary" onclick="shareSite()">
@@ -1809,15 +2074,50 @@ header button {
 
   <div id="commentsList"></div>
 
-  <div class="author ultra-author">
-    <span class="author-label">Сайт сделал —</span>
-    <a href="https://instagram.com/zhyrgal4_ik" target="_blank">@zhyrgal4_ik</a>
+  <div class="footer-end">
+    🌸 Спасибо за внимание и тёплые слова ✨
   </div>
 </footer>
 
   <div id="thanksScreen">💐 Спасибо за поздравление! 💐</div>
 
-  <script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  const SUPABASE_URL = "https://lhrregbpotifegennqjm.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_gHW9wOUYCa_XWMclVAkcAA_GjSQxuLr";
+
+  const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+  const params = new URLSearchParams(window.location.search);
+  const roomId = params.get("room") || "default-room";
+
+  function getTTLMinutes() {
+    const raw = Number(params.get("ttl"));
+
+    if (!raw || Number.isNaN(raw)) {
+      return 60;
+    }
+
+    return Math.max(20, Math.min(120, raw));
+  }
+
+  const isWeakDevice =
+    /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) &&
+    (
+      (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
+      (navigator.deviceMemory && navigator.deviceMemory <= 4)
+    );
+
+  if (isWeakDevice) {
+    document.documentElement.classList.add("weak-device");
+    document.documentElement.classList.add("low-perf");
+  }
+
 const text = `
 🌸 С 8 Марта! 🌸
 
@@ -1860,42 +2160,58 @@ const text = `
 
 С праздником вас ❤️
 `;
+let i = 0;
+let flowersCollected = 0;
 
-    let i = 0;
-    let flowersCollected = 0;
+const messageEl = document.getElementById("message");
+const flowerCounterEl = document.getElementById("flowerCounter");
+const extraWishEl = document.getElementById("extraWish");
+const commentsListEl = document.getElementById("commentsList");
+const musicEl = document.getElementById("music");
+const thanksScreenEl = document.getElementById("thanksScreen");
 
-    const messageEl = document.getElementById("message");
-    const flowerCounterEl = document.getElementById("flowerCounter");
-    const extraWishEl = document.getElementById("extraWish");
-    const commentsListEl = document.getElementById("commentsList");
-    const musicEl = document.getElementById("music");
-    const thanksScreenEl = document.getElementById("thanksScreen");
+/* ===== печать текста ===== */
 
-    function typeText() {
-      if (i < text.length) {
-        messageEl.innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typeText, 35);
-      }
-    }
+function typeText() {
+  if (i < text.length) {
+    messageEl.innerHTML += text.charAt(i);
+    i++;
 
-    typeText();
+    setTimeout(typeText, isWeakDevice ? 22 : 35);
+  }
+}
 
-    function createFlower() {
-      const flower = document.createElement("div");
-      flower.className = "flower";
-      flower.textContent = "🌸";
-      flower.style.left = Math.random() * 100 + "vw";
-      flower.style.animationDuration = 5 + Math.random() * 5 + "s";
+typeText();
 
-      document.body.appendChild(flower);
+/* ===== оптимизация цветов ===== */
 
-      setTimeout(() => {
-        flower.remove();
-      }, 10000);
-    }
+const MAX_FLOWERS = isWeakDevice ? 8 : 20;
+const FLOWER_INTERVAL = isWeakDevice ? 1500 : 700;
 
-    setInterval(createFlower, 500);
+let activeFlowers = 0;
+
+function createFlower() {
+
+  if (activeFlowers >= MAX_FLOWERS) return;
+
+  const flower = document.createElement("div");
+  flower.className = "flower";
+  flower.textContent = "🌸";
+
+  flower.style.left = Math.random() * 100 + "vw";
+  flower.style.animationDuration = (isWeakDevice ? 4 : 5) + Math.random() * 3 + "s";
+
+  activeFlowers++;
+
+  document.body.appendChild(flower);
+
+  setTimeout(() => {
+    flower.remove();
+    activeFlowers--;
+  }, isWeakDevice ? 5000 : 9000);
+}
+
+setInterval(createFlower, FLOWER_INTERVAL);
 
     function addFlower(x, y) {
       flowersCollected++;
@@ -2040,14 +2356,73 @@ async function sendComment() {
     extraWishEl.innerText = randomWish;
 
     const songs = [
-      "music1.mp3",
-      "music2.mp3",
-      "music3.mp3",
-      "music4.mp3",
-      "music5.mp3",
-      "music6.mp3",
-      "music7.mp3"
-    ];
+  "music1.mp3",
+  "music2.mp3",
+  "music3.mp3",
+  "music4.mp3",
+  "music5.mp3",
+  "music6.mp3",
+  "music7.mp3"
+];
+
+let currentSong = Math.floor(Math.random() * songs.length);
+
+const music = document.getElementById("music");
+const playBtn = document.getElementById("playBtn");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+
+function loadSong(index){
+  music.src = songs[index];
+}
+
+loadSong(currentSong);
+
+/* PLAY / PAUSE */
+
+playBtn.addEventListener("click", () => {
+
+  if(music.paused){
+    music.play();
+    playBtn.textContent = "⏸";
+  }else{
+    music.pause();
+    playBtn.textContent = "▶️";
+  }
+
+});
+
+/* NEXT */
+
+nextBtn.addEventListener("click", () => {
+
+  currentSong++;
+
+  if(currentSong >= songs.length){
+    currentSong = 0;
+  }
+
+  loadSong(currentSong);
+  music.play();
+  playBtn.textContent = "⏸";
+
+});
+
+/* PREV */
+
+prevBtn.addEventListener("click", () => {
+
+  currentSong--;
+
+  if(currentSong < 0){
+    currentSong = songs.length - 1;
+  }
+
+  loadSong(currentSong);
+  music.play();
+  playBtn.textContent = "⏸";
+
+});
 
     const randomSong = songs[Math.floor(Math.random() * songs.length)];
     musicEl.src = randomSong;
@@ -2177,6 +2552,94 @@ function closeSecretVideo() {
     video.currentTime = 0;
   }
 }
+
+const name = document.getElementById("nameInput").value.trim().slice(0, 30) || "Аноним";
+const commentText = document.getElementById("commentInput").value.trim().slice(0, 200);
+
+
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function updateCounter(count) {
+  const counter = document.getElementById("commentsCounter");
+  if (!counter) return;
+
+  if (count <= 0) {
+    counter.textContent = "💌 Пока нет ответов";
+  } else if (count === 1) {
+    counter.textContent = "💌 Уже оставил ответ: 1 человек";
+  } else {
+    counter.textContent = `💌 Уже оставили ответ: ${count} человек`;
+  }
+}
+
+async function loadComments() {
+  const { data, error } = await supabaseClient
+    .from("comments")
+    .select("id, name, message, created_at")
+    .eq("room_id", roomId)
+    .gt("expires_at", new Date().toISOString())
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Ошибка загрузки комментариев:", error);
+    return;
+  }
+
+  commentsListEl.innerHTML = "";
+
+  for (const item of data) {
+    const comment = document.createElement("div");
+    comment.innerHTML = `<b>${escapeHtml(item.name)}</b><br>${escapeHtml(item.message)}`;
+    commentsListEl.appendChild(comment);
+  }
+
+  updateCounter(data.length);
+}
+
+async function sendComment() {
+  const name =
+    document.getElementById("nameInput").value.trim().slice(0, 30) || "Аноним";
+
+  const commentText =
+    document.getElementById("commentInput").value.trim().slice(0, 200);
+
+  if (!commentText) return;
+
+  const ttlMinutes = getTTLMinutes();
+  const expiresAt = new Date(Date.now() + ttlMinutes * 60 * 1000).toISOString();
+
+  const { error } = await supabaseClient
+    .from("comments")
+    .insert([
+      {
+        room_id: roomId,
+        name,
+        message: commentText,
+        expires_at: expiresAt
+      }
+    ]);
+
+  if (error) {
+    console.error("Ошибка отправки комментария:", error);
+    return;
+  }
+
+  document.getElementById("nameInput").value = "";
+  document.getElementById("commentInput").value = "";
+
+  showThanks();
+  await loadComments();
+}
+
+loadComments();
+setInterval(loadComments, 7000);
 
   </script>
 
